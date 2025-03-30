@@ -1,14 +1,21 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
-
+#include <fstream>
 using namespace std;
+
+struct Task {
+  string name;
+  bool completed;
+  bool inprogress;
+};
+
 
 int main(){
   string name;
-  vector<string> tasks;
-  
-  
+  vector<Task> tasks;
+
+
   cout << "Greetings! Please enter your name: ";
   getline(cin, name);
   cout << "Welcome " << name <<endl;
@@ -21,7 +28,9 @@ int main(){
     cout << "1. Add Task \n";
     cout << "2. View Tasks\n";
     cout << "3. Delete Task\n";
-    cout << "4. Exit\n";
+    cout << "4. Mark Task as Complete\n";
+    cout << "5. Mark Task as In Progress\n";
+    cout << "6. Exit\n";
     cout << "Enter your choice\n";
   
     cin >> choice;
@@ -29,11 +38,15 @@ int main(){
 
     if(choice == 1){
       cout << "Enter tasks (Type 'done' to stop adding): \n";
-      while(true){
-        getline(cin,task);
-        if (task == "done") break;
-        tasks.push_back(task);
-      }
+      while (true) {
+      Task newTask;
+      getline(cin, newTask.name);
+      if (newTask.name == "done") break;
+      newTask.completed = false;
+      newTask.inprogress = false;
+      tasks.push_back(newTask);
+      }   
+
     }
     else if (choice == 2)
     {
@@ -41,8 +54,16 @@ int main(){
       if (tasks.empty()){
         cout << "No tasks added yet. \n";
       } else {
-        for (string t: tasks) {
-          cout <<" - " << t << endl;
+        for (Task t: tasks) {
+          if (t.completed == true){
+            cout << "[✓]" << t.name << endl;
+          }
+          else if (t.inprogress == true){
+            cout << "[-]" << t.name << endl;
+          }
+          else{
+            cout << "[ ]" << t.name << endl;
+          }
         }
       }
     }
@@ -54,8 +75,16 @@ int main(){
         cout << "No tasks added yet. \n";
       } 
       else {
-        for (string t: tasks) {
-          cout <<" - " << t << endl;
+        for (Task t: tasks) {
+          if (t.completed == true){
+            cout << "[✓]" << t.name;
+          }
+          else if (t.inprogress == true){
+            cout << "[-]" << t.name;
+          }
+          else{
+            cout << "[ ]" << t.name;
+          }
         }
     }
 
@@ -70,8 +99,74 @@ int main(){
       cout << "Task deleted successfully.\n";
     }
   }   
-    
     else if(choice == 4) {
+      int index;
+      cout <<"Which task would you like to mark as complete: \n";
+      cout << "Your Tasks: \n";
+      if (tasks.empty()){
+        cout << "No tasks added yet. \n";
+
+      } 
+      else {
+        for (Task t: tasks) {
+          if (t.completed == true){
+            cout << "[✓]" << t.name << endl;
+          }
+          else if (t.inprogress == true){
+            cout << "[-]" << t.name << endl;
+          }
+          else{
+            cout << "[ ]" << t.name << endl;
+          }
+        }
+    }
+
+      cin >> index;
+      cin.ignore();
+
+      if(index < 1 || index > tasks.size()){
+        cout << "Invalid task number.\n";
+      }
+      else {
+        tasks[index - 1].completed = true;
+        cout << "Task marked as complete\n";
+      }
+    }
+    else if(choice == 5) {
+      int index;
+      cout <<"Which task would you like to mark in progress: \n";
+      cout << "Your Tasks: \n";
+      if (tasks.empty()){
+        cout << "No tasks added yet. \n";
+
+      } 
+      else {
+        for (Task t: tasks) {
+          if (t.completed == true){
+            cout << "[✓]" << t.name << endl;
+          }
+          else if (t.inprogress == true){
+            cout << "[-]" << t.name << endl;
+          }
+          else{
+            cout << "[ ]" << t.name << endl;
+          }
+        }
+    }
+
+      cin >> index;
+      cin.ignore();
+
+      if(index < 1 || index > tasks.size()){
+        cout << "Invalid task number.\n";
+      }
+      else {
+        tasks[index - 1].inprogress = true;
+        cout << "Task marked in progress\n";
+      }
+    }
+
+    else if(choice == 6) {
       cout << "Have a great day!";
       break;  
     } 
@@ -81,3 +176,4 @@ int main(){
   }
   return 0;
 }
+
